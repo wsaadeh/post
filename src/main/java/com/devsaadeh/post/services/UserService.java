@@ -29,4 +29,17 @@ public class UserService {
         User user = result.orElseThrow(()-> new ResourceNotFoundException("Object not found"));
         return new UserDTO(user);
     }
+
+    @Transactional
+    public UserDTO insert(UserDTO dto){
+        User user = new User();
+        copyDtoToEntity(dto,user);
+        repository.insert(user);
+        return new UserDTO(user);
+    }
+
+    private void copyDtoToEntity(UserDTO dto, User user) {
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+    }
 }
