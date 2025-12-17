@@ -1,6 +1,8 @@
 package com.devsaadeh.post.services;
 
+import com.devsaadeh.post.models.DTO.PostDTO;
 import com.devsaadeh.post.models.DTO.UserDTO;
+import com.devsaadeh.post.models.entities.Post;
 import com.devsaadeh.post.models.entities.User;
 import com.devsaadeh.post.repositories.UserRepository;
 import com.devsaadeh.post.services.exceptions.ResourceNotFoundException;
@@ -49,6 +51,12 @@ public class UserService {
     public void delete(String id){
         getUserById(id);
         repository.deleteById(id);
+    }
+
+    @Transactional
+    public List<PostDTO> getUserPosts(String id){
+        User user = getUserById(id);
+        return user.getPosts().stream().map(x->new PostDTO(x)).toList();
     }
 
     private User getUserById(String id){
