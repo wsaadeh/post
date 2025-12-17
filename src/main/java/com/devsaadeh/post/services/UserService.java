@@ -25,8 +25,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDTO findById(String id){
-        Optional<User> result = repository.findById(id);
-        User user = result.orElseThrow(()-> new ResourceNotFoundException("Object not found"));
+        User user = getUserById(id);
         return new UserDTO(user);
     }
 
@@ -36,6 +35,19 @@ public class UserService {
         copyDtoToEntity(dto,user);
         repository.insert(user);
         return new UserDTO(user);
+    }
+
+    @Transactional
+    public UserDTO update(String id, UserDTO dto){
+        User entity = getUserById(id);
+        copyDtoToEntity(dto,entity);
+        repository.save(entity);
+        return new UserDTO(entity);
+    }
+
+    private User getUserById(String id){
+        Optional<User> result = repository.findById(id);
+        return result.orElseThrow(()-> new ResourceNotFoundException("Object not found"));
     }
 
     private void copyDtoToEntity(UserDTO dto, User user) {
