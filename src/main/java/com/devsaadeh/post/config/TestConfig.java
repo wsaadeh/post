@@ -6,8 +6,8 @@ import com.devsaadeh.post.models.entities.Post;
 import com.devsaadeh.post.models.entities.User;
 import com.devsaadeh.post.repositories.PostRepository;
 import com.devsaadeh.post.repositories.UserRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -16,26 +16,26 @@ import java.util.Arrays;
 
 @Configuration
 @Profile("test")
-public class TestConfig {
+public class TestConfig implements CommandLineRunner {
     @Autowired
     private UserRepository repository;
 
     @Autowired
     private PostRepository postRepository;
 
-//    @Autowired
-//    private org.springframework.core.env.Environment env;
+    @Autowired
+    private org.springframework.core.env.Environment env;
 
-    @PostConstruct
-    public void init(){
+    @Override
+    public void run(String... args) throws Exception{
         // Print configuration
-//        System.out.println("=== MongoDB Configuration ===");
-//        System.out.println("Active profiles: " + Arrays.toString(env.getActiveProfiles()));
-//        System.out.println("Database: " + env.getProperty("spring.data.mongodb.database"));
-//        System.out.println("Host: " + env.getProperty("spring.data.mongodb.host"));
-//        System.out.println("Port: " + env.getProperty("spring.data.mongodb.port"));
-//        System.out.println("URI: " + env.getProperty("spring.data.mongodb.uri"));
-//        System.out.println("============================");
+        System.out.println("=== MongoDB Configuration ===");
+        System.out.println("Active profiles: " + Arrays.toString(env.getActiveProfiles()));
+        System.out.println("Database: " + env.getProperty("spring.data.mongodb.database"));
+        System.out.println("Host: " + env.getProperty("spring.data.mongodb.host"));
+        System.out.println("Port: " + env.getProperty("spring.data.mongodb.port"));
+        System.out.println("URI: " + env.getProperty("spring.data.mongodb.uri"));
+        System.out.println("============================");
 
         repository.deleteAll();
         postRepository.deleteAll();
